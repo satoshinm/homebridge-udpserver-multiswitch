@@ -7,7 +7,7 @@
   "homepage": "https://github.com/nitaybz/homebridge-http-multiswitch#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cnitaybz/homebridge-http-multiswitch.git"
+    "url": "git+https://github.com/nitaybz/homebridge-http-multiswitch.git"
   },
   "keywords": [
     "homebridge-plugin",

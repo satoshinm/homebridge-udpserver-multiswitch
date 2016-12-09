@@ -1,16 +1,17 @@
 {
-  "name": "homebridge-switcheroo",
+  "name": "homebridge-http-multiswitch",
   "version": "1.0.1",
-  "author": "Chris Zelazo",
-  "description": "Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch",
+  "author": "nitaybz",
+  "description": "Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch (forked from homebridge-switcheroo)",
   "license": "MIT",
-  "homepage": "https://github.com/chriszelazo/homebridge-switcheroo#readme",
+  "homepage": "https://github.com/nitaybz/homebridge-http-multiswitch#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chriszelazo/homebridge-switcheroo.git"
+    "url": "git+https://github.com/cnitaybz/homebridge-http-multiswitch.git"
   },
   "keywords": [
     "homebridge-plugin",
+    "multiswitch",
     "switch",
     "radio"
   ],
@@ -23,6 +24,6 @@
     "request": "^2.65.0"
   },
   "bugs": {
-    "url": "https://github.com/chriszelazo/homebridge-switcheroo/issues"
+    "url": "https://github.com/nitaybz/homebridge-http-multiswitch/issues"
   }
 }

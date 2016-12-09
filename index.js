@@ -7,13 +7,13 @@ var request = require('request');
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory('homebridge-switcheroo', 'Switcheroo', Switcheroo);
+    homebridge.registerAccessory('homebridge-http-multiswitch', 'HttpMultiswitch', HttpMultiswitch);
 };
 
-function Switcheroo(log, config) {
+function HttpMultiswitch(log, config) {
     this.log = log;
 
-    this.name            = config.name             || 'Switcheroo Switch';
+    this.name            = config.name             || 'MultiSwitch';
     this.switchType      = config.switch_type;           
     this.baseUrl         = config.base_url;
     this.httpMethod      = config.http_method      || 'GET';
@@ -35,11 +35,11 @@ function Switcheroo(log, config) {
             break;
 
         default:
-            throw new Error('Unknown homebridge-switcheroo switch type');
+            throw new Error('Unknown homebridge-http-multiswitch switch type');
     }
 }
 
-Switcheroo.prototype = {
+HttpMultiswitch.prototype = {
 
     httpRequest: function(url, body, method, username, password, sendimmediately, callback) {
         request({
@@ -99,7 +99,7 @@ Switcheroo.prototype = {
                 break;
 
             default:
-                this.log('Unknown homebridge-switcheroo type in setPowerState');
+                this.log('Unknown homebridge-http-multiswitch type in setPowerState');
         }
 
         this.httpRequest(reqUrl, reqBody, this.httpMethod, this.username, this.password, this.sendImmediately, function(error, response, responseBody) {
@@ -135,8 +135,8 @@ Switcheroo.prototype = {
 
         var informationService = new Service.AccessoryInformation();
         informationService
-            .setCharacteristic(Characteristic.Manufacturer, 'Switcheroo')
-            .setCharacteristic(Characteristic.Model, 'Switcheroo');
+            .setCharacteristic(Characteristic.Manufacturer, 'Http-MultiSwitch')
+            .setCharacteristic(Characteristic.Model, 'Http-MultiSwitch');
         this.services.push(informationService);
 
         switch (this.switchType) {
@@ -180,7 +180,7 @@ Switcheroo.prototype = {
 
                 break;
             default:
-                this.log('Unknown homebridge-switcheroo type in getServices');
+                this.log('Unknown homebridge-http-multiswitch type in getServices');
         }
         
         return this.services;

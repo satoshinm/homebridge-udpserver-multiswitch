@@ -1,7 +1,7 @@
-[![npm version](https://badge.fury.io/js/homebridge-switcheroo.svg)](https://badge.fury.io/js/homebridge-switcheroo)
-
-# homebridge-switcheroo
+# homebridge-http-homebridge
 Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch switches
+
+*Forked from homebridge-switcheroo
 
 ## Switch Services
 
@@ -10,11 +10,11 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ```
 {
-        "accessory": "Switcheroo",
+        "accessory": "HttpMultiswitch",
         "switch_type": "Switch",
         "name": "My Projector",
         "http_method": "GET",
-        "base_url": "http://192.168.0.XXX/projector",
+        "base_url": "http://192.168.0.XXX/command",
         "on_url": "/state/on",
         "off_url": "/state/off"
 }
@@ -22,22 +22,29 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ### Multiswitch (radio buttons)
 Meant to be used as a switcher, where only one input is ever on.
+Automaticaly turns off the other switches when turning on one ofe them.
 
-Multiswitch appends the index number of the switch defined below to complete the path. For example, when `Chromecast` is selected, the url generated will be `http://192.168.0.XXX/switcher/input/3` (1-based numbering). 
+Multiswitch appends the the string defined under 'multiurls' below to complete the path of the Url (Must be use in the same order of the devices in "multiswitch".
+For example, when `PC Mode` is selected, the url generated will be `http://192.168.0.XXX/command?id=42786sdf787`. 
 ```
 {
-    "accessory": "Switcheroo",
+    "accessory": "HttpMultiswitch",
     "switch_type": "Multiswitch",
-    "name": "My Input Switcher",
+    "name": "My Multiswitch",
     "http_method": "GET",
-    "base_url": "http://192.168.0.XXX/switcher/input",
+    "base_url": "http://192.168.0.XXX/command?id=",
     "multiswitch": [
-       "Apple TV",
-       "HDMI",
-       "Chromecast",
-       "PS4",
-       "Raspberry Pi"
-    ]
+                "Apple TV Mode",
+                "PC Mode",
+                "Android Mode",
+                "The Music Mode"
+            ],
+            "multiurls": [
+                "43",
+                "42786sdf787",
+                "l1479461871215",
+                "44"
+            ]
 }
 ```
 
@@ -57,6 +64,7 @@ Multiswitch appends the index number of the switch defined below to complete the
 | `on_body` (only Switch)          | body for on state request                               |          |
 | `off_body` (only Switch)         | body for off state request                              |          |
 | `multiswitch` (only Multiswitch) | list of inputs for the Multiswitch - order is respected |     ✓    |
+| `multiurls` (only Multiswitch)   | list of endpoint urls for multiswitch-order is respected|     ✓    |
 
 ## Help
 
@@ -67,5 +75,5 @@ Multiswitch appends the index number of the switch defined below to complete the
 Read about an example Raspberry Pi + Homebridge setup guide with this package [here](https://github.com/chriszelazo/Apartment-Homebridge-Setup).
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install homebridge-http using: `npm install -g homebridge-switcheroo`
+2. Install homebridge-http using: `npm install -g homebridge-http-multiswitch`
 3. Update your config file

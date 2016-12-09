@@ -32,6 +32,7 @@ function HttpMultiswitch(log, config) {
 
         case 'Multiswitch':
             this.multiswitch = config.multiswitch;
+            this.multiurls = config.multiurls;
             break;
 
         default:
@@ -91,7 +92,7 @@ HttpMultiswitch.prototype = {
                     }
 
                     if (targetService.subtype === switchService.subtype) {
-                        reqUrl = this.baseUrl + '/' + idx;
+                        reqUrl = this.baseUrl + this.multiurls[idx-1];
                     } else {
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
                     }

@@ -2,7 +2,7 @@
 
 var Service;
 var Characteristic;
-var udp = reqiure('./udp');
+var udp = require('./udp');
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;

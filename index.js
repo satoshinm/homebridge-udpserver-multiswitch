@@ -2,15 +2,14 @@
 
 var Service;
 var Characteristic;
-var request = require('request');
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory('homebridge-http-multiswitch', 'HttpMultiswitch', HttpMultiswitch);
+    homebridge.registerAccessory('homebridge-udp-multiswitch', 'UdpMultiswitch', UdpMultiswitch);
 };
 
-function HttpMultiswitch(log, config) {
+function UdpMultiswitch(log, config) {
     this.log = log;
 
     this.name            = config.name             || 'MultiSwitch';
@@ -43,6 +42,7 @@ function HttpMultiswitch(log, config) {
 HttpMultiswitch.prototype = {
 
     httpRequest: function(url, body, method, username, password, sendimmediately, callback) {
+        /*
         request({
             url: url,
             body: body,
@@ -57,6 +57,7 @@ HttpMultiswitch.prototype = {
         function(error, response, body) {
             callback(error, response, body);
         });
+        */
     },
 
     setPowerState: function(targetService, powerState, callback, context) {

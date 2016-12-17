@@ -10,7 +10,7 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ```
 {
-        "accessory": "HttpMultiswitch",
+        "accessory": "UdpMultiswitch",
         "switch_type": "Switch",
         "name": "My Projector",
         "http_method": "GET",

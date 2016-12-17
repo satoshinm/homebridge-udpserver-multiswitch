@@ -2,6 +2,7 @@
 
 var Service;
 var Characteristic;
+var udp = reqiure('./udp');
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
@@ -12,57 +13,38 @@ module.exports = function (homebridge) {
 function UdpMultiswitch(log, config) {
     this.log = log;
 
-    this.name            = config.name             || 'MultiSwitch';
+    this.name            = config.name || 'MultiSwitch';
     this.switchType      = config.switch_type;           
-    this.baseUrl         = config.base_url;
-    this.httpMethod      = config.http_method      || 'GET';
+    this.host            = config.host;
+    this.port            = config.port;
 
-    this.username        = config.username         || '';
-    this.password        = config.password         || '';
-    this.sendImmediately = config.send_immediately || '';
+    this.onPayload      = config.on_payload;
+    this.offPayload     = config.off_payload;
+
+    this.multiswitch     = config.multiswitch;
 
     switch (this.switchType) {
         case 'Switch':
-            this.onUrl   = this.baseUrl + config.on_url;
-            this.offUrl  = this.baseUrl + config.off_url;
-            this.onBody  = config.on_body  || '';
-            this.offBody = config.off_body || '';
             break;
-
         case 'Multiswitch':
-            this.multiswitch = config.multiswitch;
-            this.multiurls = config.multiurls;
             break;
 
         default:
-            throw new Error('Unknown homebridge-http-multiswitch switch type');
+            throw new Error('Unknown homebridge-udp-multiswitch switch type');
     }
 }
 
 UdpMultiswitch.prototype = {
 
-    httpRequest: function(url, body, method, username, password, sendimmediately, callback) {
-        /*
-        request({
-            url: url,
-            body: body,
-            method: method,
-            rejectUnauthorized: false,
-            auth: {
-                user: username,
-                pass: password,
-                sendImmediately: sendimmediately
-            }
-        },
-        function(error, response, body) {
-            callback(error, response, body);
+    udpRequest: function(host, port, payload, callback) {
+        udp(host, port, payload, function (err) {
+            callback(err);
         });
-        */
     },
 
     setPowerState: function(targetService, powerState, callback, context) {
         var funcContext = 'fromSetPowerState';
-        var reqUrl = '', reqBody = '';
+        var payload;
 
         // Callback safety
         if (context == funcContext) {
@@ -75,14 +57,13 @@ UdpMultiswitch.prototype = {
 
         switch(this.switchType) {
             case 'Switch':
-                if (!this.onUrl || !this.offUrl) {
-                    this.log.warn('Ignoring request; No power state urls defined.');
-                    callback(new Error('No power state urls defined.'));
+                if (!this.onPayload || !this.offPayload) {
+                    this.log.warn('Ignoring request; No power state payloads defined.');
+                    callback(new Error('No power state payloads defined.'));
                     return;
                 }
 
-                reqUrl  = powerState ? this.onUrl  : this.offUrl;
-                reqBody = powerState ? this.onBody : this.offBody;
+                payload  = powerState ? this.onPayload  : this.offPayload;
                 break;
 
             case 'Multiswitch':
@@ -93,7 +74,8 @@ UdpMultiswitch.prototype = {
                     }
 
                     if (targetService.subtype === switchService.subtype) {
-                        reqUrl = this.baseUrl + this.multiurls[idx-1];
+                        payload = this.multiswitch[idx-1].payload;
+                        
                     } else {
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
                     }
@@ -101,10 +83,10 @@ UdpMultiswitch.prototype = {
                 break;
 
             default:
-                this.log('Unknown homebridge-http-multiswitch type in setPowerState');
+                this.log('Unknown homebridge-udp-multiswitch type in setPowerState');
         }
 
-        this.httpRequest(reqUrl, reqBody, this.httpMethod, this.username, this.password, this.sendImmediately, function(error, response, responseBody) {
+        this.udpRequest(this.host, this.port, payload, function(error) {
             if (error) {
                 this.log.error('setPowerState failed: ' + error.message);
                 this.log('response: ' + response + '\nbody: ' + responseBody);
@@ -137,8 +119,8 @@ UdpMultiswitch.prototype = {
 
         var informationService = new Service.AccessoryInformation();
         informationService
-            .setCharacteristic(Characteristic.Manufacturer, 'Http-MultiSwitch')
-            .setCharacteristic(Characteristic.Model, 'Http-MultiSwitch');
+            .setCharacteristic(Characteristic.Manufacturer, 'Udp-MultiSwitch')
+            .setCharacteristic(Characteristic.Model, 'Udp-MultiSwitch');
         this.services.push(informationService);
 
         switch (this.switchType) {
@@ -157,7 +139,7 @@ UdpMultiswitch.prototype = {
                 this.log('(multiswitch)');
 
                 for (var i = 0; i < this.multiswitch.length; i++) {
-                    var switchName = this.multiswitch[i];
+                    var switchName = this.multiswitch[i].name;
 
                     switch(i) {
                         case 0:
@@ -182,7 +164,7 @@ UdpMultiswitch.prototype = {
 
                 break;
             default:
-                this.log('Unknown homebridge-http-multiswitch type in getServices');
+                this.log('Unknown homebridge-udp-multiswitch type in getServices');
         }
         
         return this.services;

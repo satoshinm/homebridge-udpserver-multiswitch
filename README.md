@@ -1,7 +1,7 @@
-# homebridge-http-homebridge
-Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch switches
+# homebridge-udp-multiswitch
+Simple UDP switches for Homebridge - stateful and radio-button/multi-switch switches
 
-*Forked from homebridge-switcheroo
+*Forked from homebridge-http-homebridge
 
 ## Switch Services
 
@@ -13,37 +13,28 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
         "accessory": "UdpMultiswitch",
         "switch_type": "Switch",
         "name": "My Projector",
-        "http_method": "GET",
-        "base_url": "http://192.168.0.XXX/command",
-        "on_url": "/state/on",
-        "off_url": "/state/off"
+        "host": "192.168.0.X",
+        "port": 80,
+        "on_payload": "[YOUR_UDP_ON_PAYLOAD]",
+        "off_payload": "[YOUR_UDP_OFF_PAYLOAD]"
 }
 ```
 
 ### Multiswitch (radio buttons)
-Meant to be used as a switcher, where only one input is ever on.
-Automaticaly turns off the other switches when turning on one ofe them.
+Meant to be used as a switcher, where only one device is ever on.
+Automaticaly set power state as off for the other devices.
 
-Multiswitch appends the the string defined under 'multiurls' below to complete the path of the Url (Must be use in the same order of the devices in "multiswitch".
-For example, when `PC Mode` is selected, the url generated will be `http://192.168.0.XXX/command?id=42786sdf787`. 
 ```
 {
-    "accessory": "HttpMultiswitch",
+    "accessory": "UdpMultiswitch",
     "switch_type": "Multiswitch",
     "name": "My Multiswitch",
-    "http_method": "GET",
-    "base_url": "http://192.168.0.XXX/command?id=",
+    "host": "192.168.0.X",
+    "port": 80,
     "multiswitch": [
-                "Apple TV Mode",
-                "PC Mode",
-                "Android Mode",
-                "The Music Mode"
-            ],
-            "multiurls": [
-                "43",
-                "42786sdf787",
-                "l1479461871215",
-                "44"
+                { "name": "Apple TV Mode", "payload" : "43" },
+                { "name": "PC Mode", "payload" : "42786sdf787" },
+                { "name": "Android", "payload" : "l1479461871215" },
             ]
 }
 ```
@@ -54,26 +45,18 @@ For example, when `PC Mode` is selected, the url generated will be `http://192.1
 | -------------------------------- | ------------------------------------------------------- |:--------:|
 | `name`                           | name of the accessory                                   |          |
 | `switch_type`                    | `Switch` or `Multiswitch`                               |     ✓    |
-| `base_url`                       | url endpoint for whatever is receiving these requests   |     ✓    |
-| `http_method`                    | `GET` (default), `POST`,  `PUT`, `DELETE`               |          |
-| `username`                       | username for request                                    |          |
-| `password`                       | password for request                                    |          |
-| `send_immediately`               | option for request                                      |          |
-| `on_url` (only Switch)           | endpoint for the on state                               |     ✓    |
-| `off_url` (only Switch)          | endpoint for the off state                              |     ✓    |
-| `on_body` (only Switch)          | body for on state request                               |          |
-| `off_body` (only Switch)         | body for off state request                              |          |
+| `host`                           | endpoint for whatever is receiving these requests       |     ✓    |
+| `port`                           | 80 (default)                                            |          |
+| `on_payload` (only Switch)       | payload for the on state                                |     ✓    |
+| `off_payload` (only Switch)      | payload for the off state                               |     ✓    |
 | `multiswitch` (only Multiswitch) | list of inputs for the Multiswitch - order is respected |     ✓    |
-| `multiurls` (only Multiswitch)   | list of endpoint urls for multiswitch-order is respected|     ✓    |
 
 ## Help
 
-  - Make sure specify a port in the if necessary. (i.e. `"base_url" : "http://192.168.0.XXX:2000"`)
-  - Verify the correct `http_method` is begin used. Switcheroo defaults to `GET`
+  - Make sure specify a port in the if necessary. (i.e. `"port" : "80"`)
 
 ## Installation
-Read about an example Raspberry Pi + Homebridge setup guide with this package [here](https://github.com/chriszelazo/Apartment-Homebridge-Setup).
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install homebridge-http using: `npm install -g homebridge-http-multiswitch`
+2. Install homebridge-http using: `npm install -g homebridge-udp-multiswitch`
 3. Update your config file

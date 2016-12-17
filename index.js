@@ -16,7 +16,7 @@ function UdpMultiswitch(log, config) {
     this.name            = config.name || 'MultiSwitch';
     this.switchType      = config.switch_type;           
     this.host            = config.host;
-    this.port            = config.port;
+    this.port            = config.port || 80;
 
     this.onPayload      = config.on_payload;
     this.offPayload     = config.off_payload;

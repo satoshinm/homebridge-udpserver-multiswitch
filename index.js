@@ -39,7 +39,7 @@ function UdpMultiswitch(log, config) {
     }
 }
 
-HttpMultiswitch.prototype = {
+UdpMultiswitch.prototype = {
 
     httpRequest: function(url, body, method, username, password, sendimmediately, callback) {
         /*

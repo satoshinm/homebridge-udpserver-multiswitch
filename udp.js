@@ -6,17 +6,20 @@ module.exports = function (host, port, payload, callback) {
   var dgram = require('dgram');
   var client = dgram.createSocket('udp4');
 
-  client.send(broadcast, 0, broadcast.length, port, host, function(err, bytes) {
-    if (err) throw err;
-    console.log('UDP message sent to ' + host +':'+ port);
 
-    client.send(message, 0, message.length, port, host, function(err, bytes) {
+  setTimeout(function() { 
+    client.send(broadcast, 0, broadcast.length, port, host, function(err, bytes) {
       if (err) throw err;
       console.log('UDP message sent to ' + host +':'+ port);
-      client.close();
 
-      callback(err);
+      client.send(message, 0, message.length, port, host, function(err, bytes) {
+        if (err) throw err;
+        console.log('UDP message sent to ' + host +':'+ port);
+        client.close();
+
+        callback(err);
+      });
+
     });
-
-  });
+  }, 50);
 }

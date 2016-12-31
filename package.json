@@ -1,6 +1,6 @@
 {
   "name": "homebridge-udp-multiswitch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "nitaybz",
   "description": "Simple UDP switches for Homebridge - stateful and radio-button/multi-switch (forked from homebridge-http-multiswitch)",
   "license": "MIT",

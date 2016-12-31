@@ -5,7 +5,7 @@ module.exports = function (host, port, payload, callback) {
 
   var dgram = require('dgram');
   var client = dgram.createSocket('udp4');
-
+  var delayTime = Math.floor(Math.random() * 1000) + 1  
 
   setTimeout(function() { 
     client.send(broadcast, 0, broadcast.length, port, host, function(err, bytes) {
@@ -21,5 +21,5 @@ module.exports = function (host, port, payload, callback) {
       });
 
     });
-  }, 50);
+  }, delayTime);
 }

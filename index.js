@@ -14,23 +14,12 @@ function UdpServerMultiswitch(log, config) {
     this.log = log;
 
     this.name            = config.name || 'MultiSwitch';
-    this.switchType      = config.switch_type;           
     this.port            = config.port || 8261;
 
     var onPayload        = config.on_payload;
     var offPayload       = config.off_payload;
 
     var multiswitch      = config.multiswitch;
-
-    switch (this.switchType) {
-        case 'Switch':
-            break;
-        case 'Multiswitch':
-            break;
-
-        default:
-            throw new Error('Unknown homebridge-udpserver-multiswitch switch type');
-    }
 
     var services = [];
 
@@ -40,8 +29,7 @@ function UdpServerMultiswitch(log, config) {
         .setCharacteristic(Characteristic.Model, 'Udp-MultiSwitch');
     services.push(informationService);
 
-    switch (this.switchType) {
-        case 'Switch':
+    if (!this.multiswitch) {
             this.log('(switch)');
 
             var switchService = new Service.Switch(this.name);
@@ -50,9 +38,7 @@ function UdpServerMultiswitch(log, config) {
                 .setValue(false);
 
             services.push(switchService);
-
-            break;
-        case 'Multiswitch':
+    } else {
             this.log('(multiswitch)');
 
             for (var i = 0; i < this.multiswitch.length; i++) {
@@ -75,12 +61,7 @@ function UdpServerMultiswitch(log, config) {
 
                 services.push(switchService);
             }
-
-            break;
-        default:
-            this.log('Unknown homebridge-udpserver-multiswitch type in getServices');
     }
-    
 
     this.server = dgram.createSocket('udp4');
     this.server.on('error', function(err) {

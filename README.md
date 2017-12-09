@@ -11,7 +11,6 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 ```
 {
         "accessory": "UdpServerMultiswitch",
-        "switch_type": "Switch",
         "name": "My Projector",
         "port": 8261,
         "on_payload": "[YOUR_UDP_ON_PAYLOAD]",
@@ -26,7 +25,6 @@ Automaticaly set power state as off for the other devices.
 ```
 {
     "accessory": "UdpServerMultiswitch",
-    "switch_type": "Multiswitch",
     "name": "My Multiswitch",
     "port": 8261,
     "multiswitch": [
@@ -42,7 +40,6 @@ Automaticaly set power state as off for the other devices.
 |             Parameter            |                       Description                       | Required |
 | -------------------------------- | ------------------------------------------------------- |:--------:|
 | `name`                           | name of the accessory                                   |          |
-| `switch_type`                    | `Switch` or `Multiswitch`                               |     ✓    |
 | `port`                           | 8261 (default)                                          |          |
 | `on_payload` (only Switch)       | payload for the on state                                |     ✓    |
 | `off_payload` (only Switch)      | payload for the off state                               |     ✓    |

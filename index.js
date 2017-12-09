@@ -29,7 +29,7 @@ function UdpServerMultiswitch(log, config) {
         .setCharacteristic(Characteristic.Model, 'Udp-MultiSwitch');
     services.push(informationService);
 
-    if (!this.multiswitch) {
+    if (!multiswitch) {
             this.log('(switch)');
 
             var switchService = new Service.Switch(this.name);
@@ -41,13 +41,13 @@ function UdpServerMultiswitch(log, config) {
     } else {
             this.log('(multiswitch)');
 
-            for (var i = 0; i < this.multiswitch.length; i++) {
-                var switchName = this.multiswitch[i].name;
+            for (var i = 0; i < multiswitch.length; i++) {
+                var switchName = multiswitch[i].name;
 
                 switch(i) {
                     case 0:
                         this.log.warn('---+--- ' + switchName); break;
-                    case this.multiswitch.length-1:
+                    case multiswitch.length-1:
                         this.log.warn('   +--- ' + switchName); break;
                     default:
                         this.log.warn('   |--- ' + switchName);
@@ -82,9 +82,6 @@ function UdpServerMultiswitch(log, config) {
         var hex = msg.toString('hex');
 
         console.log('udp message received: ' + hex + ' from ' + rinfo.address);
-console.log('onPayload='+onPayload);
-console.log('offPayload='+offPayload);
-console.log(config);
         if (hex === onPayload) {
             console.log('requested to turn on');
             setAll(true);
@@ -95,7 +92,7 @@ console.log(config);
             var found = false;
             for (var i = 0; i < multiswitch.length; ++i) {
                 var name = multiswitch[i].name;
-                var payload = multiswitch[i].name;
+                var payload = multiswitch[i].payload;
 
                 if (hex === payload) {
                     found = name;
@@ -107,7 +104,7 @@ console.log(config);
                 for (var i = 1; i < services.length; ++i) {
                     services[i]
                         .getCharacteristic(Characteristic.On)
-                        .setValue(service[i].displayName === found);
+                        .setValue(services[i].displayName === found);
                 }
             } else {
                 console.log('unrecognized multiswitch message received: ' + hex);

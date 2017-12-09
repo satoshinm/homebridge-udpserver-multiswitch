@@ -13,8 +13,7 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
         "accessory": "UdpMultiswitch",
         "switch_type": "Switch",
         "name": "My Projector",
-        "host": "192.168.0.X",
-        "port": 80,
+        "port": 8261,
         "on_payload": "[YOUR_UDP_ON_PAYLOAD]",
         "off_payload": "[YOUR_UDP_OFF_PAYLOAD]"
 }
@@ -29,8 +28,7 @@ Automaticaly set power state as off for the other devices.
     "accessory": "UdpMultiswitch",
     "switch_type": "Multiswitch",
     "name": "My Multiswitch",
-    "host": "192.168.0.X",
-    "port": 80,
+    "port": 8261,
     "multiswitch": [
                 { "name": "Apple TV Mode", "payload" : "43" },
                 { "name": "PC Mode", "payload" : "42786sdf787" },
@@ -45,15 +43,14 @@ Automaticaly set power state as off for the other devices.
 | -------------------------------- | ------------------------------------------------------- |:--------:|
 | `name`                           | name of the accessory                                   |          |
 | `switch_type`                    | `Switch` or `Multiswitch`                               |     ✓    |
-| `host`                           | endpoint for whatever is receiving these requests       |     ✓    |
-| `port`                           | 80 (default)                                            |          |
+| `port`                           | 8261 (default)                                          |          |
 | `on_payload` (only Switch)       | payload for the on state                                |     ✓    |
 | `off_payload` (only Switch)      | payload for the off state                               |     ✓    |
 | `multiswitch` (only Multiswitch) | list of inputs for the Multiswitch - order is respected |     ✓    |
 
 ## Help
 
-  - Make sure specify a port in the if necessary. (i.e. `"port" : "80"`)
+  - Make sure specify a port in the if necessary. (i.e. `"port" : "8261"`)
 
 ## Installation
 

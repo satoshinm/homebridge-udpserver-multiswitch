@@ -18,6 +18,7 @@ function UdpServerMultiswitch(log, config) {
 
     var onPayload        = config.on_payload;
     var offPayload       = config.off_payload;
+    var togglePayload    = config.toggle_payload;
 
     var multiswitch      = config.multiswitch;
 
@@ -88,6 +89,16 @@ function UdpServerMultiswitch(log, config) {
         } else if (hex === offPayload) {
             console.log('requested to turn off');
             setAll(false);
+        } else if (hex === togglePayload) {
+            console.log('requested to toggle');
+
+            var previousState = false;
+            for (var i = 1; i < services.length; ++i) {
+                console.log('service ' + services[i].displayName + ' state = ' + services[i].getCharacteristic(Characteristic.On).value);
+                previousState ^= services[i].getCharacteristic(Characteristic.On).value;
+            }
+
+            setAll(!previousState);
         } else if (multiswitch) {
             var found = false;
             for (var i = 0; i < multiswitch.length; ++i) {

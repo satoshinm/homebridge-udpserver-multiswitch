@@ -1,7 +1,7 @@
 # homebridge-udpserver-multiswitch
 Simple UDP switches for Homebridge - stateful and radio-button/multi-switch switches
 
-*Forked from homebridge-http-homebridge
+*Forked from [homebridge-udp-multiswitch](https://github.com/nitaybz/homebridge-udp-multiswitch)
 
 ## Switch Services
 
@@ -13,14 +13,18 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
         "accessory": "UdpServerMultiswitch",
         "name": "My Projector",
         "port": 8261,
-        "on_payload": "[YOUR_UDP_ON_PAYLOAD]",
-        "off_payload": "[YOUR_UDP_OFF_PAYLOAD]"
+        "on_payload": "ff",
+        "off_payload": "00",
+        "toggle_payload": "80"
 }
 ```
 
 ### Multiswitch (radio buttons)
-Meant to be used as a switcher, where only one device is ever on.
-Automaticaly set power state as off for the other devices.
+Can be used as a switcher, where only one device is ever on. However,
+the `on_payload`, `off_payload`, and `toggle_payload` options can also be
+optionally specified to affect all of the states.
+
+Automatically set power state as off for the other devices.
 
 ```
 {
@@ -37,17 +41,18 @@ Automaticaly set power state as off for the other devices.
 
 ## Configuration Params
 
-|             Parameter            |                       Description                       | Required |
-| -------------------------------- | ------------------------------------------------------- |:--------:|
-| `name`                           | name of the accessory                                   |          |
-| `port`                           | 8261 (default)                                          |          |
-| `on_payload` (only Switch)       | payload for the on state                                |     ✓    |
-| `off_payload` (only Switch)      | payload for the off state                               |     ✓    |
-| `multiswitch` (only Multiswitch) | list of inputs for the Multiswitch - order is respected |     ✓    |
+|             Parameter            |                       Description                       |
+| -------------------------------- | ------------------------------------------------------- |
+| `name`                           | name of the accessory                                   |
+| `port`                           | 8261 (default)                                          |
+| `on_payload`                     | payload for turning all to the on state                 |
+| `off_payload`                    | payload for turning all to the off state                |
+| `toggle_payload`                 | payload for toggling all                                |
+| `multiswitch`                    | list of inputs for the Multiswitch - order is respected |
 
 ## Help
 
-  - Make sure specify a port in the if necessary. (i.e. `"port" : "8261"`)
+Test sending inputs to the UDP port using `nc -u 127.0.0.1 8261`.
 
 ## Installation
 

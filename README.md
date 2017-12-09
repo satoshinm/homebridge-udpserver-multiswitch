@@ -1,17 +1,21 @@
 # homebridge-udpserver-multiswitch
-Simple UDP switches for Homebridge - stateful and radio-button/multi-switch switches
+Simple UDP server switches for Homebridge - stateful and radio-button/multi-switch switches
 
 *Forked from [homebridge-udp-multiswitch](https://github.com/nitaybz/homebridge-udp-multiswitch)
+
+Listens on a UDP port, and alters state based on the UDP packet payload. Developed for use
+with an ESP8266 device running [wallswitch](https://github.com/satoshinm/wallswitch) to
+smarten up your dumb light switch.
 
 ## Switch Services
 
 ### Switch (standard on/off)
-Meant to be used as a standard on/off switch. Light, projector, fan, etc.
+Meant to be used as a standard on/off switch. Wall switch, etc.
 
 ```
 {
         "accessory": "UdpServerMultiswitch",
-        "name": "My Projector",
+        "name": "Wallswitch",
         "port": 8261,
         "on_payload": "ff",
         "off_payload": "00",

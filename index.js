@@ -7,10 +7,10 @@ var dgram = require('dgram');
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory('homebridge-udp-multiswitch', 'UdpMultiswitch', UdpMultiswitch);
+    homebridge.registerAccessory('homebridge-udpserver-multiswitch', 'UdpServerMultiswitch', UdpServerMultiswitch);
 };
 
-function UdpMultiswitch(log, config) {
+function UdpServerMultiswitch(log, config) {
     this.log = log;
 
     this.name            = config.name || 'MultiSwitch';
@@ -29,7 +29,7 @@ function UdpMultiswitch(log, config) {
             break;
 
         default:
-            throw new Error('Unknown homebridge-udp-multiswitch switch type');
+            throw new Error('Unknown homebridge-udpserver-multiswitch switch type');
     }
 
     var services = [];
@@ -78,7 +78,7 @@ function UdpMultiswitch(log, config) {
 
             break;
         default:
-            this.log('Unknown homebridge-udp-multiswitch type in getServices');
+            this.log('Unknown homebridge-udpserver-multiswitch type in getServices');
     }
     
 
@@ -139,10 +139,10 @@ console.log(config);
     this.services = services;
 
     this.server.bind(this.port);
-    console.log('homebridge-udp-multiswitch listening udp port ' + this.port);
+    console.log('homebridge-udpserver-multiswitch listening udp port ' + this.port);
 }
 
-UdpMultiswitch.prototype = {
+UdpServerMultiswitch.prototype = {
 
     getServices: function () {
         return this.services;

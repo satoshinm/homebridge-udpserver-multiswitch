@@ -1,4 +1,4 @@
-# homebridge-udp-multiswitch
+# homebridge-udpserver-multiswitch
 Simple UDP switches for Homebridge - stateful and radio-button/multi-switch switches
 
 *Forked from homebridge-http-homebridge
@@ -10,7 +10,7 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ```
 {
-        "accessory": "UdpMultiswitch",
+        "accessory": "UdpServerMultiswitch",
         "switch_type": "Switch",
         "name": "My Projector",
         "port": 8261,
@@ -25,7 +25,7 @@ Automaticaly set power state as off for the other devices.
 
 ```
 {
-    "accessory": "UdpMultiswitch",
+    "accessory": "UdpServerMultiswitch",
     "switch_type": "Multiswitch",
     "name": "My Multiswitch",
     "port": 8261,
@@ -55,5 +55,5 @@ Automaticaly set power state as off for the other devices.
 ## Installation
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install homebridge-http using: `npm install -g homebridge-udp-multiswitch`
+2. Install homebridge-http using: `npm install -g homebridge-udpserver-multiswitch`
 3. Update your config file
